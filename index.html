@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Vehicle Intelligence Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 50% 0%, #111827 0%, #030712 100%);
+        }
+        .font-mono-premium {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="text-slate-300 min-h-screen flex flex-col justify-between">
+
+    <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center border-b border-slate-900">
+        <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-shield-halved text-lg"></i>
+            </div>
+            <div>
+                <h1 class="text-white font-black tracking-tight text-lg font-mono-premium">PARIVAHAN <span class="text-emerald-400">PREMIUM</span></h1>
+                <p class="text-xs text-slate-500 tracking-widest uppercase font-bold">Secure Database Systems</p>
+            </div>
+        </div>
+        <div id="live-clock" class="text-xs font-mono-premium text-slate-400 bg-slate-900/60 px-4 py-2 rounded-xl border border-slate-800/60">
+            📅 LOADING CLOCK...
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12 flex flex-col justify-center">
+        
+        <div class="glass-card p-8 rounded-3xl shadow-2xl relative overflow-hidden mb-8">
+            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
+            
+            <div class="mb-6">
+                <h2 class="text-2xl font-extrabold text-white tracking-tight mb-2">Vehicle Intelligence Lookup</h2>
+                <p class="text-sm text-slate-400">Enter a valid registration number below to query the live enterprise server database.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-car text-slate-500 absolute left-4 top-1/2 -translate-y-1/2 text-base"></i>
+                    <input type="text" id="search-vehicle-input" placeholder="e.g. GJ05XX1234" 
+                           class="w-full bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl pl-12 pr-4 py-4 text-base focus:outline-none focus:border-emerald-500 uppercase tracking-widest font-mono-premium font-bold transition-all">
+                </div>
+                <button onclick="searchVehicleData()" class="glow-button px-8 py-4 bg-emerald-500 text-slate-950 font-bold rounded-2xl hover:bg-emerald-400 transition-all text-base flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i> Search Record
+                </button>
+            </div>
+
+            <div id="lookup-status" class="text-xs text-slate-400 font-mono-premium mt-4 hidden flex items-center gap-2">
+                <i class="fa-solid fa-circle-notch animate-spin text-emerald-400"></i> <span id="status-text">Querying Cloud Nodes...</span>
+            </div>
+        </div>
+
+        <div id="vehicle-result-card" class="hidden glass-card rounded-3xl p-8 shadow-2xl border border-slate-800 relative transition-all duration-500">
+            
+            <div class="flex justify-between items-start border-b border-slate-800/80 pb-6 mb-6">
+                <div>
+                    <span class="text-xs font-mono-premium text-emerald-400 uppercase tracking-widest font-bold">VERIFIED INSURED OBJECT</span>
+                    <h4 id="res-vehicle-num" class="text-3xl font-black text-white font-mono-premium tracking-wider mt-1">GJ05XX1234</h4>
+                </div>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold rounded-lg uppercase tracking-wider font-mono-premium">SECURE DATA</span>
+                    <span id="res-date" class="text-[10px] text-slate-500 font-mono-premium">LOG DATE: -</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono-premium">
+                
+                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
+                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Holder Name</span>
+                    <div class="flex items-center gap-2.5 mt-1.5">
+                        <i class="fa-solid fa-user text-slate-400 text-xs"></i>
+                        <span id="res-cust-name" class="text-white font-bold text-base tracking-wide">-</span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
+                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Contact Link</span>
+                    <div class="flex items-center gap-2.5 mt-1.5">
+                        <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
+                        <span id="res-mo-no" class="text-yellow-400 font-bold text-base tracking-wide">-</span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
+                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Managing Agent</span>
+                    <div class="flex items-center gap-2.5 mt-1.5">
+                        <i class="fa-solid fa-user-tie text-slate-400 text-xs"></i>
+                        <span id="res-agent" class="text-cyan-400 font-bold text-base tracking-wide">-</span>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
+                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Operation Scope</span>
+                    <div class="flex items-center gap-2.5 mt-1.5">
+                        <i class="fa-solid fa-gears text-slate-400 text-xs"></i>
+                        <span id="res-vehicle-for" class="text-emerald-400 font-bold text-base tracking-wide">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-900/60 flex justify-between items-center text-[10px] text-slate-600 font-mono-premium">
+                <span>SYSTEM BLOCK ENCRYPTED</span>
+                <span>DESKTOP ID v1.0.3</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full text-center py-6 border-t border-slate-950 text-xs text-slate-600 font-mono-premium">
+        &copy; 2026 Parivahan Service Engine. Cloud Node Pipelines Unlimited Access.
+    </footer>
+
+    <script>
+        function searchVehicleData() {
+            const inputVal = document.getElementById('search-vehicle-input').value.trim().toUpperCase();
+            const statusEl = document.getElementById('lookup-status');
+            const statusText = document.getElementById('status-text');
+            const resultCard = document.getElementById('vehicle-result-card');
+
+            if(!inputVal) {
+                alert("Kripya valid vehicle number darj karein!");
+                return;
+            }
+
+            // UI Reset States
+            statusEl.classList.remove('hidden');
+            statusText.innerText = "Querying Cloud Database Routing...";
+            resultCard.classList.add('hidden');
+
+            // 🔴 यहाँ 'IDHAR_APNI_LINK_DALO' को हटाकर अपना कॉपी किया हुआ Web App URL पेस्ट करें
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxaucPgO4EbKx42i6qjlYP_5XuN4CrcuLFzXVHjGXt4f55Rnsry8PuGvMdXpjs5NwNQ/exec'; 
+            const finalUrl = `${googleScriptUrl}?vehicle_number=${inputVal}`;
+
+            fetch(finalUrl)
+            .then(res => res.json())
+            .then(data => {
+                statusEl.classList.add('hidden');
+
+                if(!data || data.length === 0) {
+                    alert("Record nahi mila! Kripya gaadi ka number check karein.");
+                    return;
+                }
+
+                const record = data[0];
+
+                // Data Binding with Premium ID Elements (According to your sheet headers)
+                document.getElementById('res-vehicle-num').innerText = record["REG.NO"] || inputVal;
+                document.getElementById('res-cust-name').innerText = record["CUSTMER NAME"] || 'NOT FOUND';
+                document.getElementById('res-mo-no').innerText = record["MO. NO"] || 'N/A'; 
+                document.getElementById('res-agent').innerText = record["AGENT"] || 'N/A';
+                document.getElementById('res-vehicle-for').innerText = record["VEHICLE.FOR"] || 'N/A';
+                document.getElementById('res-date').innerText = "LOG DATE: " + (record["DATE"] || 'N/A');
+
+                // Smooth Reveal
+                resultCard.classList.remove('hidden');
+            })
+            .catch(err => {
+                console.error("API Error Matrix:", err);
+                statusText.innerText = "Connection Error! Retrying Pipeline...";
+                alert("Database connection failed. Please check if Web App URL is configured correctly.");
+            });
+        }
+
+        // LIVE IST CLOCK ENGINE
+        function updateLiveClock() {
+            const clockEl = document.getElementById('live-clock');
+            if(!clockEl) return;
+            const options = { timeZone: 'Asia/Kolkata', hour12: true, year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            clockEl.innerText = "📅 " + new Date().toLocaleString('en-US', options).toUpperCase();
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+    </script>
+</body>
+</html>
