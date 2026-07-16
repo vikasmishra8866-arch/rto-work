@@ -1,197 +1,508 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Vehicle Intelligence Portal</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Agarwal Enterprise - Central Ledger Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            400: '#fbbf24', // Premium Gold Accent
+                            500: '#f59e0b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 50% 0%, #111827 0%, #030712 100%);
+        /* Premium Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
+        
+        .active-tab-desktop {
+            background-color: #0f172a !important;
+            border-left: 4px solid #fbbf24 !important;
+            color: #fbbf24 !important;
         }
-        .font-mono-premium {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .glow-button {
-            transition: all 0.3s ease;
-            box-shadow: 0 0 0 rgba(16, 185, 129, 0);
-        }
-        .glow-button:hover {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-            transform: translateY(-1px);
+        
+        .active-tab-mobile {
+            background-color: #1e293b !important;
+            color: #fbbf24 !important;
+            border-top: 2px solid #fbbf24 !important;
         }
     </style>
 </head>
-<body class="text-slate-300 min-h-screen flex flex-col justify-between">
+<body class="h-full font-sans antialiased overflow-hidden flex flex-col selection:bg-amber-400 selection:text-slate-950">
 
-    <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center border-b border-slate-900">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
-                <i class="fa-solid fa-shield-halved text-lg"></i>
-            </div>
-            <div>
-                <h1 class="text-white font-black tracking-tight text-lg font-mono-premium">AGARWAL <span class="text-emerald-400">ENTERPRISE</span></h1>
-                <p class="text-xs text-slate-500 tracking-widest uppercase font-bold">Secure Database Systems</p>
-            </div>
-        </div>
-        <div id="live-clock" class="text-xs font-mono-premium text-slate-400 bg-slate-900/60 px-4 py-2 rounded-xl border border-slate-800/60">
-            📅 LOADING CLOCK...
-        </div>
-    </header>
+    <div id="toast-hub" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12 flex flex-col justify-center">
+    <div class="h-full flex flex-col bg-slate-950">
         
-        <div class="glass-card p-8 rounded-3xl shadow-2xl relative overflow-hidden mb-8">
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
-            
-            <div class="mb-6">
-                <h2 class="text-2xl font-extrabold text-white tracking-tight mb-2">Vehicle Intelligence Lookup</h2>
-                <p class="text-sm text-slate-400">Enter a valid registration number below to query the live enterprise server database.</p>
+        <header class="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between shrink-0 gap-3 sm:gap-0 z-20 shadow-xl">
+            <div class="flex items-center space-x-3">
+                <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                <h1 class="text-lg sm:text-xl font-black tracking-wider text-white uppercase">
+                    AGARWAL <span class="text-amber-400">ENTERPRISE</span>
+                </h1>
+                <span class="text-[9px] font-extrabold tracking-widest bg-slate-950 px-2 py-0.5 rounded text-amber-400 border border-slate-800">CENTRAL HUB</span>
             </div>
+            
+            <div class="bg-slate-950 px-4 py-1.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-400 flex items-center space-x-3 shadow-inner font-mono">
+                <i class="fa-regular fa-calendar-days text-amber-400"></i>
+                <span id="live-clock-display" class="text-amber-400 tracking-wider">00-00-0000 | 00:00:00 AM</span>
+            </div>
+        </header>
 
-            <div class="flex flex-col sm:flex-row gap-3">
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-car text-slate-500 absolute left-4 top-1/2 -translate-y-1/2 text-base"></i>
-                    <input type="text" id="search-vehicle-input" placeholder="e.g. GJ05XX1234" 
-                           class="w-full bg-slate-950/60 border border-slate-800 text-white placeholder-slate-600 rounded-2xl pl-12 pr-4 py-4 text-base focus:outline-none focus:border-emerald-500 uppercase tracking-widest font-mono-premium font-bold transition-all">
-                </div>
-                <button onclick="searchVehicleData()" class="glow-button px-8 py-4 bg-emerald-500 text-slate-950 font-bold rounded-2xl hover:bg-emerald-400 transition-all text-base flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-magnifying-glass text-sm"></i> Search Record
+        <div class="sm:hidden bg-slate-900 border-b border-slate-800 shrink-0">
+            <div class="grid grid-cols-3 text-center text-xs">
+                <button onclick="switchTab('insurance')" id="mobile-tab-insurance" class="py-3 px-1 font-bold text-slate-400 border-t-2 border-transparent transition-all">
+                    <i class="fa-solid fa-shield-halved block mb-1 text-sm"></i>
+                    Insurance
+                </button>
+                <button onclick="switchTab('transfer')" id="mobile-tab-transfer" class="py-3 px-1 font-bold text-slate-400 border-t-2 border-transparent transition-all">
+                    <i class="fa-solid fa-right-left block mb-1 text-sm"></i>
+                    Transfer
+                </button>
+                <button onclick="switchTab('passing')" id="mobile-tab-passing" class="py-3 px-1 font-bold text-slate-400 border-t-2 border-transparent transition-all">
+                    <i class="fa-solid fa-file-signature block mb-1 text-sm"></i>
+                    Passing
                 </button>
             </div>
-
-            <div id="lookup-status" class="text-xs text-slate-400 font-mono-premium mt-4 hidden flex items-center gap-2">
-                <i class="fa-solid fa-circle-notch animate-spin text-emerald-400"></i> <span id="status-text">Querying Cloud Nodes...</span>
-            </div>
         </div>
 
-        <div id="vehicle-result-card" class="hidden glass-card rounded-3xl p-8 shadow-2xl border border-slate-800 relative transition-all duration-500">
+        <div class="flex flex-1 overflow-hidden relative">
             
-            <div class="flex justify-between items-start border-b border-slate-800/80 pb-6 mb-6">
-                <div>
-                    <span class="text-xs font-mono-premium text-emerald-400 uppercase tracking-widest font-bold">VERIFIED INSURED OBJECT</span>
-                    <h4 id="res-vehicle-num" class="text-3xl font-black text-white font-mono-premium tracking-wider mt-1">GJ05XX1234</h4>
-                </div>
-                <div class="flex flex-col items-end gap-1.5">
-                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold rounded-lg uppercase tracking-wider font-mono-premium">SECURE DATA</span>
-                    <span id="res-date" class="text-[10px] text-slate-500 font-mono-premium">LOG DATE: -</span>
-                </div>
-            </div>
+            <aside class="hidden sm:flex w-64 bg-slate-900 border-r border-slate-800 flex-col justify-between shrink-0">
+                <nav class="p-4 space-y-1.5">
+                    <span class="block px-3 text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-3">OPERATIONAL UNITS</span>
+                    
+                    <button onclick="switchTab('insurance')" id="desktop-tab-insurance" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-slate-950 hover:text-white transition-all group border border-transparent">
+                        <i class="fa-solid fa-shield-halved text-base group-hover:text-amber-400"></i>
+                        <span>Insurance Details</span>
+                    </button>
+                    
+                    <button onclick="switchTab('transfer')" id="desktop-tab-transfer" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-slate-950 hover:text-white transition-all group border border-transparent">
+                        <i class="fa-solid fa-right-left text-base group-hover:text-amber-400"></i>
+                        <span>Transfer & Passing</span>
+                    </button>
+                    
+                    <button onclick="switchTab('passing')" id="desktop-tab-passing" class="w-full flex items-center space-x-3 px-3 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-slate-950 hover:text-white transition-all group border border-transparent">
+                        <i class="fa-solid fa-file-signature text-base group-hover:text-amber-400"></i>
+                        <span>Passing Records</span>
+                    </button>
+                </nav>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono-premium">
+                <div class="p-4 border-t border-slate-800 bg-slate-950/40 flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-400 flex items-center justify-center text-slate-950 font-black text-xs font-mono">
+                        AE
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">Agarwal Sys-Node</p>
+                        <p class="text-[9px] text-emerald-400 font-bold uppercase tracking-wider">Online & Active</p>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 bg-slate-950 overflow-y-auto p-4 sm:p-8 relative">
                 
-                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
-                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Holder Name</span>
-                    <div class="flex items-center gap-2.5 mt-1.5">
-                        <i class="fa-solid fa-user text-slate-400 text-xs"></i>
-                        <span id="res-cust-name" class="text-white font-bold text-base tracking-wide">-</span>
-                    </div>
-                </div>
+                <div class="max-w-4xl mx-auto space-y-6">
+                    
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-lg">
+                        <h2 id="workspace-title" class="text-lg sm:text-xl font-bold text-white tracking-wide">
+                            Insurance Database Registry
+                        </h2>
+                        <p id="workspace-desc" class="text-xs text-slate-400 mt-1">
+                            Search and retrieve vehicle insurance coverage details and metadata records instantly from Sheet 1 database.
+                        </p>
+                        
+                        <div class="mt-6 space-y-4 relative">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+                                    Search Vehicle Registration Number
+                                </label>
+                                <div class="relative rounded-xl shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                                    </div>
+                                    <input type="text" id="vehicle-search-input" autocomplete="off" oninput="handleVehicleSearch(this.value)" placeholder="Type vehicle number (e.g. GJ05, 1400)" class="block w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all text-sm uppercase tracking-widest">
+                                </div>
 
-                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
-                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Contact Link</span>
-                    <div class="flex items-center gap-2.5 mt-1.5">
-                        <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
-                        <span id="res-mo-no" class="text-yellow-400 font-bold text-base tracking-wide">-</span>
-                    </div>
-                </div>
+                                <div id="search-suggestions-dropdown" class="hidden absolute left-0 right-0 mt-1.5 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-30 max-h-60 overflow-y-auto divide-y divide-slate-800/60">
+                                    </div>
+                            </div>
 
-                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
-                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Managing Agent</span>
-                    <div class="flex items-center gap-2.5 mt-1.5">
-                        <i class="fa-solid fa-user-tie text-slate-400 text-xs"></i>
-                        <span id="res-agent" class="text-cyan-400 font-bold text-base tracking-wide">-</span>
+                            <button type="button" onclick="triggerManualSearch()" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-xs font-bold tracking-widest text-slate-950 bg-amber-400 hover:bg-amber-300 focus:outline-none transition-all duration-200">
+                                <i class="fa-solid fa-database mr-2 mt-0.5"></i> GET DETAILS FROM EXCEL
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="p-4 bg-slate-950/40 rounded-2xl border border-slate-900 hover:border-slate-800 transition-all">
-                    <span class="text-[11px] text-slate-500 block font-bold tracking-wider uppercase">Operation Scope</span>
-                    <div class="flex items-center gap-2.5 mt-1.5">
-                        <i class="fa-solid fa-gears text-slate-400 text-xs"></i>
-                        <span id="res-vehicle-for" class="text-emerald-400 font-bold text-base tracking-wide">-</span>
+                    <div id="data-skeleton-loader" class="hidden space-y-4">
+                        <div class="h-5 bg-slate-800/40 rounded w-1/4 animate-pulse"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="h-20 bg-slate-900/50 border border-slate-800/50 rounded-xl animate-pulse"></div>
+                            <div class="h-20 bg-slate-900/50 border border-slate-800/50 rounded-xl animate-pulse"></div>
+                            <div class="h-20 bg-slate-900/50 border border-slate-800/50 rounded-xl animate-pulse"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="mt-6 pt-4 border-t border-slate-900/60 flex justify-between items-center text-[10px] text-slate-600 font-mono-premium">
-                <span>SYSTEM BLOCK ENCRYPTED</span>
-                <span>DESKTOP ID v1.0.3</span>
-            </div>
+                    <div id="data-display-container" class="hidden space-y-6 animate-fadeIn">
+                        <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+                            <span class="text-[10px] font-bold tracking-widest text-amber-400 uppercase bg-amber-400/10 px-2.5 py-1 rounded border border-amber-400/20">
+                                LIVE METADATA RECORD FOUND
+                            </span>
+                        </div>
+                        
+                        <div id="dynamic-metadata-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            </div>
+                    </div>
+
+                </div>
+            </main>
         </div>
-    </main>
 
-    <footer class="w-full text-center py-6 border-t border-slate-950 text-xs text-slate-600 font-mono-premium">
-        &copy; 2026 Parivahan Service Engine. Cloud Node Pipelines Unlimited Access.
-    </footer>
+        <footer class="bg-slate-950 border-t border-slate-900 text-center py-4 text-[10px] font-bold tracking-widest text-slate-500 uppercase shrink-0">
+            © ALL RESERVED RIGHT VIKAS MISHRA
+        </footer>
+
+    </div>
 
     <script>
-        function searchVehicleData() {
-            const inputVal = document.getElementById('search-vehicle-input').value.trim().toUpperCase();
-            const statusEl = document.getElementById('lookup-status');
-            const statusText = document.getElementById('status-text');
-            const resultCard = document.getElementById('vehicle-result-card');
+        // =========================================================================
+        // 🛠️ ACTIVE LIVE APIS SETTINGS (APKI ACTUAL APIs CONFIGURATION)
+        // =========================================================================
+        const API_URL_INSURANCE = "https://script.google.com/macros/s/AKfycbwK-DScdHmTxM6qHF3GAwgVkxT0nOG_ICUTw5oZq98OBNONWCEQRUxMma_me2OgZ_Gd/exec";
+        const API_URL_TRANSFER  = "https://script.google.com/macros/s/AKfycbyTJszGtHACQHAalqLsEtg9C6druJDfiSNVzjc_w2s7d7hRoKWvAT2orGHOg0uFTgBZ/exec";
+        const API_URL_PASSING   = "https://script.google.com/macros/s/AKfycbwrupATbF6q7RTq4uJayEVJ6Oi1cSfNKaTGkMzEmPyVB3OoqIukNr5np4-7A3RSOlws-Q/exec";
 
-            if(!inputVal) {
-                alert("Kripya valid vehicle number darj karein!");
+        // Global System Variables
+        let currentTab = 'insurance';
+        
+        // Tab Database Cache Dataset
+        let cacheData = {
+            insurance: [],
+            transfer: [],
+            passing: []
+        };
+        
+        let isLoadingCache = {
+            insurance: false,
+            transfer: false,
+            passing: false
+        };
+
+        // System Initialization Trigger on DomContentLoaded
+        document.addEventListener("DOMContentLoaded", () => {
+            initializeDigitalClock();
+            switchTab('insurance'); // Start Default Tab
+        });
+
+        // 1. Digital Clock Frame Thread (Real-time updates)
+        function initializeDigitalClock() {
+            setInterval(() => {
+                const clockBox = document.getElementById('live-clock-display');
+                if (clockBox) {
+                    const now = new Date();
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const year = now.getFullYear();
+                    
+                    let hours = now.getHours();
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const seconds = String(now.getSeconds()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // 0 turns to 12
+                    const strHours = String(hours).padStart(2, '0');
+                    
+                    clockBox.textContent = `${day}-${month}-${year} | ${strHours}:${minutes}:${seconds} ${ampm}`;
+                }
+            }, 1000);
+        }
+
+        // Custom Notification Toast Alerts Generator
+        function systemToast(message, type = 'info') {
+            const container = document.getElementById('toast-hub');
+            const toast = document.createElement('div');
+            toast.className = `flex items-center space-x-3 px-4 py-3 rounded-xl border shadow-2xl text-xs font-bold tracking-wide transform translate-y-2 opacity-0 transition-all duration-300 pointer-events-auto bg-slate-900 ${
+                type === 'error' ? 'border-rose-800 text-rose-400' :
+                type === 'success' ? 'border-emerald-800 text-emerald-400' : 'border-slate-700 text-amber-400'
+            }`;
+            
+            const icon = type === 'error' ? 'fa-triangle-exclamation' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info';
+            toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 50);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Active Endpoints Mapping
+        function getApiUrlByTab(tab) {
+            if (tab === 'insurance') return API_URL_INSURANCE;
+            if (tab === 'transfer') return API_URL_TRANSFER;
+            if (tab === 'passing') return API_URL_PASSING;
+            return '';
+        }
+
+        // Live Sheets Cache Syncing Thread (CORS Policy Proofed)
+        async function prefetchSheetMatrix(tab) {
+            const apiTarget = getApiUrlByTab(tab);
+            if (!apiTarget) return;
+            if (cacheData[tab].length > 0 || isLoadingCache[tab]) return;
+
+            isLoadingCache[tab] = true;
+            try {
+                const response = await fetch(apiTarget, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                const result = await response.json();
+                
+                if (Array.isArray(result)) {
+                    cacheData[tab] = result;
+                    console.log(`Database Node Sync complete: ${tab.toUpperCase()} loaded.`);
+                } else {
+                    console.error("Payload array format error on Google Script response.");
+                }
+            } catch (err) {
+                console.error("Failed server request connection matrix:", err);
+                systemToast(`Could not connect to ${tab.toUpperCase()} cloud sheet!`, "error");
+            } finally {
+                isLoadingCache[tab] = false;
+            }
+        }
+
+        // ==========================================
+        // 2. ADAPTIVE TAB SWITCH CONTROLLER
+        // ==========================================
+        function switchTab(tabId) {
+            currentTab = tabId;
+
+            // Clear Workspace States
+            document.getElementById('vehicle-search-input').value = '';
+            document.getElementById('search-suggestions-dropdown').classList.add('hidden');
+            document.getElementById('data-display-container').classList.add('hidden');
+            document.getElementById('data-skeleton-loader').classList.add('hidden');
+
+            const titleEl = document.getElementById('workspace-title');
+            const descEl = document.getElementById('workspace-desc');
+            
+            if (tabId === 'insurance') {
+                titleEl.textContent = "Insurance Details Registry";
+                descEl.textContent = "Search and retrieve vehicle insurance coverage details and metadata records instantly from Sheet 1 database.";
+            } else if (tabId === 'transfer') {
+                titleEl.textContent = "Transfer & Passing Registry";
+                descEl.textContent = "Audit passing transfers, ownership indexes, and processing updates securely from Sheet 2 database.";
+            } else if (tabId === 'passing') {
+                titleEl.textContent = "Passing Records Command Unit";
+                descEl.textContent = "Search and view comprehensive passing history logs and vehicle compliance data points from Sheet 3 database.";
+            }
+
+            // Sync visual navigation styles
+            const tabs = ['insurance', 'transfer', 'passing'];
+            tabs.forEach(t => {
+                const dtButton = document.getElementById(`desktop-tab-${t}`);
+                const mbButton = document.getElementById(`mobile-tab-${t}`);
+                
+                if (t === tabId) {
+                    if (dtButton) dtButton.classList.add('active-tab-desktop');
+                    if (mbButton) mbButton.classList.add('active-tab-mobile');
+                } else {
+                    if (dtButton) dtButton.classList.remove('active-tab-desktop');
+                    if (mbButton) mbButton.classList.remove('active-tab-mobile');
+                }
+            });
+
+            // Start prefetching targeted node sheets database dynamically
+            prefetchSheetMatrix(tabId);
+        }
+
+        // ==========================================
+        // 3. TARGETED REG.NO ONLY SEARCH FILTER ENGINE
+        // ==========================================
+        function handleVehicleSearch(query) {
+            const dropdown = document.getElementById('search-suggestions-dropdown');
+            const normalizedQuery = query.trim().toUpperCase();
+
+            if (!normalizedQuery) {
+                dropdown.classList.add('hidden');
+                dropdown.innerHTML = '';
                 return;
             }
 
-            // UI Reset States
-            statusEl.classList.remove('hidden');
-            statusText.innerText = "Querying Cloud Database Routing...";
-            resultCard.classList.add('hidden');
+            const activeDataset = cacheData[currentTab];
+            if (!activeDataset || activeDataset.length === 0) {
+                dropdown.innerHTML = `<div class="p-3 text-xs text-slate-500 italic"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i>Syncing sheet cache, please wait...</div>`;
+                dropdown.classList.remove('hidden');
+                prefetchSheetMatrix(currentTab);
+                return;
+            }
 
-            // 🔴 यहाँ 'IDHAR_APNI_LINK_DALO' को हटाकर अपना कॉपी किया हुआ Web App URL पेस्ट करें
-            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxaucPgO4EbKx42i6qjlYP_5XuN4CrcuLFzXVHjGXt4f55Rnsry8PuGvMdXpjs5NwNQ/exec'; 
-            const finalUrl = `${googleScriptUrl}?vehicle_number=${inputVal}`;
-
-            fetch(finalUrl)
-            .then(res => res.json())
-            .then(data => {
-                statusEl.classList.add('hidden');
-
-                if(!data || data.length === 0) {
-                    alert("Record nahi mila! Kripya gaadi ka number check karein.");
-                    return;
-                }
-
-                const record = data[0];
-
-                // Data Binding with Premium ID Elements (According to your sheet headers)
-                document.getElementById('res-vehicle-num').innerText = record["REG.NO"] || inputVal;
-                document.getElementById('res-cust-name').innerText = record["CUSTMER NAME"] || 'NOT FOUND';
-                document.getElementById('res-mo-no').innerText = record["MO. NO"] || 'N/A'; 
-                document.getElementById('res-agent').innerText = record["AGENT"] || 'N/A';
-                document.getElementById('res-vehicle-for').innerText = record["VEHICLE.FOR"] || 'N/A';
-                document.getElementById('res-date').innerText = "LOG DATE: " + (record["DATE"] || 'N/A');
-
-                // Smooth Reveal
-                resultCard.classList.remove('hidden');
-            })
-            .catch(err => {
-                console.error("API Error Matrix:", err);
-                statusText.innerText = "Connection Error! Retrying Pipeline...";
-                alert("Database connection failed. Please check if Web App URL is configured correctly.");
+            // SEARCH FILTER STRICT SPECIFICITY: Only scan REG.NO or REG. NO. columns
+            const matchedRows = activeDataset.filter(row => {
+                const regValue = String(row["REG. NO."] || row["REG.NO"] || '').toUpperCase();
+                return regValue.includes(normalizedQuery);
             });
+
+            const suggestionsLimit = matchedRows.slice(0, 8);
+
+            if (suggestionsLimit.length === 0) {
+                dropdown.innerHTML = `<div class="p-3 text-xs text-slate-500 italic"><i class="fa-solid fa-ghost mr-1.5"></i>No matching vehicle registration found</div>`;
+                dropdown.classList.remove('hidden');
+                return;
+            }
+
+            dropdown.innerHTML = '';
+            suggestionsLimit.forEach(row => {
+                const regNo = String(row["REG. NO."] || row["REG.NO"] || 'N/A').toUpperCase();
+                const clientName = String(row["CUSTOMER NAME"] || row["OWNER NAME"] || row["CLIENT NAME"] || '').toUpperCase();
+                
+                const button = document.createElement('button');
+                button.type = "button";
+                button.className = "w-full text-left px-4 py-3 text-xs hover:bg-slate-800 text-white transition-all flex justify-between items-center group border-l-2 border-transparent hover:border-amber-400";
+                
+                button.innerHTML = `
+                    <div class="font-mono font-bold text-white group-hover:text-amber-400">
+                        <i class="fa-solid fa-car text-[10px] mr-2 text-slate-500 group-hover:text-amber-400"></i>${regNo}
+                    </div>
+                    ${clientName ? `<div class="text-[10px] text-slate-400 truncate max-w-[180px] font-medium">${clientName}</div>` : ''}
+                `;
+                
+                button.onclick = () => {
+                    document.getElementById('vehicle-search-input').value = regNo;
+                    dropdown.classList.add('hidden');
+                    renderSelectedRecord(row);
+                };
+                dropdown.appendChild(button);
+            });
+            dropdown.classList.remove('hidden');
         }
 
-        // LIVE IST CLOCK ENGINE
-        function updateLiveClock() {
-            const clockEl = document.getElementById('live-clock');
-            if(!clockEl) return;
-            const options = { timeZone: 'Asia/Kolkata', hour12: true, year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            clockEl.innerText = "📅 " + new Date().toLocaleString('en-US', options).toUpperCase();
+        // Manual search trigger on "GET DETAILS FROM EXCEL" click
+        function triggerManualSearch() {
+            const inputVal = document.getElementById('vehicle-search-input').value.trim().toUpperCase();
+            if (!inputVal) {
+                systemToast("Please type or select a Vehicle Number first!", "error");
+                return;
+            }
+
+            const activeDataset = cacheData[currentTab];
+            if (!activeDataset || activeDataset.length === 0) {
+                systemToast("Syncing database... please wait 2 seconds.", "info");
+                prefetchSheetMatrix(currentTab);
+                return;
+            }
+
+            // Find match checking ONLY registration columns
+            const exactMatch = activeDataset.find(row => {
+                const regValue = String(row["REG. NO."] || row["REG.NO"] || '').toUpperCase();
+                return regValue === inputVal;
+            });
+
+            const fallbackMatch = exactMatch || activeDataset.find(row => {
+                const regValue = String(row["REG. NO."] || row["REG.NO"] || '').toUpperCase();
+                return regValue.includes(inputVal);
+            });
+
+            if (fallbackMatch) {
+                renderSelectedRecord(fallbackMatch);
+            } else {
+                systemToast(`Vehicle '${inputVal}' not found in ${currentTab.toUpperCase()} registry!`, "error");
+            }
         }
-        setInterval(updateLiveClock, 1000);
-        updateLiveClock();
+
+        // ==========================================================
+        // 4. AUTOMATIC DYNAMIC HEADER MAPPER (Automatic Grid Render)
+        // ==========================================================
+        function renderSelectedRecord(rowObject) {
+            const skeleton = document.getElementById('data-skeleton-loader');
+            const container = document.getElementById('data-display-container');
+            const grid = document.getElementById('dynamic-metadata-grid');
+
+            container.classList.add('hidden');
+            skeleton.classList.remove('hidden');
+
+            setTimeout(() => {
+                skeleton.classList.add('hidden');
+                grid.innerHTML = '';
+
+                // Extract headers/keys dynamically
+                const keys = Object.keys(rowObject);
+
+                keys.forEach(key => {
+                    const cellValue = String(rowObject[key] || '').trim();
+                    
+                    // Skip technical internal properties or blanks
+                    if (key.startsWith('__') || cellValue === '') return;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-900 border border-slate-800/80 p-4 rounded-xl shadow-md hover:border-slate-700 transition-all group flex flex-col justify-between";
+
+                    // Dynamic Icons Mappers based on headers keywords
+                    let iconClass = "fa-layer-group";
+                    const checkKey = key.toUpperCase();
+                    
+                    if (checkKey.includes("REG") || checkKey.includes("VEHICLE")) iconClass = "fa-id-card-clip";
+                    else if (checkKey.includes("NAME") || checkKey.includes("CUSTOMER") || checkKey.includes("OWNER")) iconClass = "fa-user";
+                    else if (checkKey.includes("MOBILE") || checkKey.includes("MO") || checkKey.includes("PHONE")) iconClass = "fa-phone-volume";
+                    else if (checkKey.includes("DATE")) iconClass = "fa-calendar-day";
+                    else if (checkKey.includes("CH") || checkKey.includes("CHASSIS")) iconClass = "fa-barcode";
+                    else if (checkKey.includes("EN") || checkKey.includes("ENGINE")) iconClass = "fa-gears";
+                    else if (checkKey.includes("INSURANCE") || checkKey.includes("POLICY")) iconClass = "fa-shield-halved";
+                    else if (checkKey.includes("AGENT") || checkKey.includes("BROKER")) iconClass = "fa-user-tie";
+                    else if (checkKey.includes("STATUS")) iconClass = "fa-toggle-on";
+                    else if (checkKey.includes("MONEY") || checkKey.includes("AMT") || checkKey.includes("PRICE") || checkKey.includes("CHARGE") || checkKey.includes("FEE")) iconClass = "fa-indian-rupee-sign";
+
+                    card.innerHTML = `
+                        <div class="flex items-start justify-between space-x-2">
+                            <div class="truncate">
+                                <span class="text-[9px] font-bold tracking-widest text-slate-500 uppercase block">${key}</span>
+                                <span class="text-sm font-bold text-white tracking-wide block mt-1 select-all break-words font-mono">${cellValue}</span>
+                            </div>
+                            <div class="p-2 bg-slate-950 rounded-lg text-amber-400/80 border border-slate-800 shrink-0 group-hover:text-amber-400 group-hover:border-amber-400/30 transition-all">
+                                <i class="fa-solid ${iconClass} text-xs"></i>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                container.classList.remove('hidden');
+                systemToast("Data mapped successfully!", "success");
+            }, 400);
+        }
+
+        // Close dropdown when clicking outside search context
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('search-suggestions-dropdown');
+            const searchInput = document.getElementById('vehicle-search-input');
+            if (dropdown && e.target !== dropdown && e.target !== searchInput) {
+                dropdown.classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
