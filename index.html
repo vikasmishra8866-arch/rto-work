@@ -340,33 +340,54 @@
         }
 
         /* ==========================================
-           TARGETED PARSING & DATA INTEGRITY FILTER
+           DATABASE SYNCHRONIZATION RUNTIME (FETCH & CACHE)
            ========================================== */
-        function executeDynamicSearch(e) {
-            const query = e.target.value.toUpperCase().replace(/[\s\.-]/g, '');
-            const dropdown = document.getElementById("suggestions-box");
-            const spinner = document.getElementById("search-spinner");
+        async function syncDatabase(forceRefresh = false) {
+            const searchInput = document.getElementById("vehicle-search");
+            const indicator = document.getElementById("cache-indicator");
+            const syncIcon = document.getElementById("sync-icon");
+            const totalCounter = document.getElementById("total-records-count");
             
-            if (!query) {
-                hideSuggestions();
+            dismissAlert();
+            
+            if (!forceRefresh && insuranceCache) {
+                searchInput.disabled = false;
+                indicator.classList.remove("hidden");
                 return;
             }
 
-            spinner.classList.remove("hidden");
+            searchInput.disabled = true;
+            searchInput.placeholder = "Syncing live tracking nodes from engine...";
+            indicator.classList.add("hidden");
+            syncIcon.classList.add("fa-spin", "text-amber-400");
+            showLoader();
 
-            // Strictly filter via parsed query metrics against "REG. NO." column
-            const mappedRecords = insuranceCache.filter(row => {
-                const regKey = Object.keys(row).find(k => k.toUpperCase().replace(/[\s\.]/g, '') === "REGNO");
-                if (!regKey || !row[regKey]) return false;
+            try {
+                // Yahan humne redirect parameters explicitly handle kiye hain
+                const res = await fetch(API_URL_INSURANCE, {
+                    method: "GET",
+                    mode: "cors",
+                    credentials: "omit"
+                });
                 
-                const cleanRegVal = String(row[regKey]).toUpperCase().replace(/[\s\.-]/g, '');
-                return cleanRegVal.includes(query);
-            });
-
-            renderSuggestions(mappedRecords);
-            spinner.classList.add("hidden");
+                if (!res.ok) throw new Error("Network handshake failure");
+                
+                const data = await res.json();
+                insuranceCache = Array.isArray(data) ? data : [];
+                
+                totalCounter.textContent = insuranceCache.length;
+                searchInput.disabled = false;
+                searchInput.placeholder = "Enter Registration No. (e.g. GJ05, GJ05BY6826)...";
+                indicator.classList.remove("hidden");
+            } catch (err) {
+                console.error(err);
+                triggerUIError("Handshake failure - Please ensure you changed deployment version to 'New Version' in Apps Script.");
+                searchInput.placeholder = "Failed to synchronize operational dataset.";
+            } finally {
+                syncIcon.classList.remove("fa-spin", "text-amber-400");
+                hideLoader();
+            }
         }
-
         /* ==========================================
            PREMIUM DROPDOWN SUGGESTIONS LISTENER
            ========================================== */
