@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agarwal Enterprise - Premium Operational Dashboard</title>
+    <title>Agarwal Enterprise - Premium Insurance Ledger</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons for Elite UI/UX -->
+    <!-- FontAwesome Icons for Premium UI -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -18,6 +18,7 @@
                             950: '#020617',
                             900: '#0f172a',
                             800: '#1e293b',
+                            700: '#334155',
                             400: '#94a3b8',
                             100: '#f1f5f9',
                         },
@@ -30,7 +31,7 @@
         }
     </script>
     <style type="text/css">
-        /* Premium custom scrollbar styling matching slate aesthetics */
+        /* Webkit Sleek Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -53,10 +54,9 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(30, 41, 59, 0.7);
         }
-        
-        /* Interactive pulse glow */
+
         .glow-hover:hover {
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.15);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
         }
     </style>
 </head>
@@ -66,41 +66,51 @@
     <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 px-4 py-3 md:px-8 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-400 to-amber-500 flex items-center justify-center shadow-md shadow-amber-400/20">
-                <i class="fa-solid fa-truck-ramp-box text-slate-950 text-xl"></i>
+                <i class="fa-solid fa-shield-halved text-slate-950 text-xl"></i>
             </div>
             <div>
                 <span class="text-lg md:text-xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-slate-100 via-slate-200 to-amber-400">
                     AGARWAL ENTERPRISE
                 </span>
                 <span class="hidden md:inline-block ml-3 px-2 py-0.5 text-[10px] font-bold tracking-widest text-slate-950 bg-amber-400 rounded uppercase">
-                    PRO SUITE
+                    INSURANCE PORTAL
                 </span>
             </div>
         </div>
         
-        <!-- Real-Time Digital System Clock -->
+        <!-- System Digital Clock -->
         <div class="flex items-center gap-2 text-xs md:text-sm font-mono text-slate-400 bg-slate-900/90 px-3.5 py-1.5 rounded-md border border-slate-800">
             <i class="fa-regular fa-clock text-amber-400 animate-pulse"></i>
-            <span id="digital-clock" class="tracking-wide text-slate-300">Loading system clock...</span>
+            <span id="digital-clock" class="tracking-wide text-slate-300">Synchronizing...</span>
         </div>
     </header>
 
-    <!-- WORKSPACE CONFIGURATION -->
+    <!-- CORE DESKTOP & MOBILE WORKSPACE -->
     <div class="flex flex-1 overflow-hidden relative">
 
-        <!-- DESKTOP PERSISTENT SIDEBAR -->
+        <!-- LEFT SIDEBAR CONTAINER (CURRENTLY SINGLE PORTAL CONFIGURATION) -->
         <aside class="hidden lg:flex flex-col w-72 bg-slate-900 border-r border-slate-800/80 p-5 shrink-0 justify-between">
             <div class="space-y-6">
                 <div>
-                    <p class="text-[10px] font-bold tracking-widest text-slate-400 uppercase px-3">Operational Portals</p>
-                    <nav class="mt-3 space-y-2" id="desktop-nav">
-                        <!-- Navigation tabs populated via script -->
+                    <p class="text-[10px] font-bold tracking-widest text-slate-400 uppercase px-3">Active Module</p>
+                    <nav class="mt-3 space-y-2">
+                        <button class="w-full flex items-center gap-3.5 px-4 py-3 text-sm font-bold rounded-lg bg-slate-950 text-amber-400 border-l-4 border-amber-400 shadow-md outline-none text-left">
+                            <i class="fa-solid fa-shield-halved text-lg w-5 text-amber-400"></i>
+                            <span>Insurance Details</span>
+                        </button>
                     </nav>
                 </div>
-                
-                <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800">
-                    <p class="text-xs font-bold text-amber-400 mb-1"><i class="fa-solid fa-bolt mr-1"></i> Global Search Status</p>
-                    <p class="text-[11px] text-slate-400 leading-relaxed">Fast local storage caching is enabled. Instant vehicle registration parsing and mapping active.</p>
+
+                <!-- Database Metrics Status Tracker -->
+                <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2">
+                    <p class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-emerald-400 animate-ping w-2 h-2 rounded-full"></i>
+                        Live Database Engine
+                    </p>
+                    <div class="flex justify-between text-[11px] text-slate-400 pt-1">
+                        <span>Cached Records:</span>
+                        <span id="total-records-count" class="font-bold text-slate-200">-</span>
+                    </div>
                 </div>
             </div>
             
@@ -111,17 +121,17 @@
                     </div>
                     <div>
                         <p class="text-xs font-semibold text-slate-200">Terminal Admin</p>
-                        <p class="text-[10px] text-slate-400">Authorized Session</p>
+                        <p class="text-[10px] text-slate-400">Secure Active Session</p>
                     </div>
                 </div>
             </div>
         </aside>
 
-        <!-- MAIN VIEWSPACE CONTAINER -->
+        <!-- MAIN MAIN CONTAINER -->
         <main class="flex-1 flex flex-col bg-slate-950 overflow-y-auto p-4 md:p-8 pb-24 lg:pb-8">
             
-            <!-- Global Connection & Alert Banner -->
-            <div id="alert-banner" class="hidden mb-6 p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-red-200 flex items-center justify-between shadow-lg shadow-red-950/20">
+            <!-- Connection & Handshake Interceptor Alert -->
+            <div id="alert-banner" class="hidden mb-6 p-4 rounded-xl bg-red-950/40 border border-red-500/30 text-red-200 flex items-center justify-between shadow-lg">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-circle-exclamation text-red-400 text-lg"></i>
                     <div>
@@ -129,26 +139,26 @@
                         <span class="text-xs text-red-400/90" id="alert-message">Please verify API Endpoint Configurations.</span>
                     </div>
                 </div>
-                <button onclick="dismissAlert()" class="text-red-400 hover:text-red-200 px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="dismissAlert()" class="text-red-400 hover:text-red-200 px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Workspace Action Card -->
+            <!-- Workspace Master Search Controller -->
             <div class="w-full rounded-2xl glass-panel p-6 md:p-8 glow-hover transition-all duration-300 mb-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h2 class="text-xl md:text-2xl font-bold tracking-tight text-slate-100" id="workspace-title">Loading Portal...</h2>
-                            <span id="cache-indicator" class="hidden px-2 py-0.5 text-[9px] font-semibold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 rounded-full">CACHED</span>
+                            <h2 class="text-xl md:text-2xl font-bold tracking-tight text-slate-100">Insurance Audit Dashboard</h2>
+                            <span id="cache-indicator" class="hidden px-2 py-0.5 text-[9px] font-semibold text-emerald-400 bg-emerald-950/50 border border-emerald-500/30 rounded-full">LIVE CONNECTED</span>
                         </div>
-                        <p class="text-sm text-slate-400 mt-1" id="workspace-description">Access, audit, and structure enterprise vehicle records instantly.</p>
+                        <p class="text-sm text-slate-400 mt-1">Instant database parsing engine mapped for tracking commercial parameters.</p>
                     </div>
                     
-                    <button id="refresh-btn" onclick="triggerSessionSync(true)" class="self-start md:self-auto px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all border border-slate-700/80 rounded-lg flex items-center gap-2">
-                        <i id="sync-icon" class="fa-solid fa-rotate"></i> Sync Data Base
+                    <button id="refresh-btn" onclick="syncDatabase(true)" class="self-start md:self-auto px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all border border-slate-700/80 rounded-lg flex items-center gap-2">
+                        <i id="sync-icon" class="fa-solid fa-rotate"></i> Sync Live Data
                     </button>
                 </div>
 
-                <!-- TARGETED VEHICLE SPECIFICITY ENGINE (SEARCH CONTEXT) -->
+                <!-- TARGETED VEHICLE SPECIFICITY ENGINE -->
                 <div class="relative w-full max-w-2xl">
                     <label class="block text-xs font-bold tracking-widest text-slate-400 uppercase mb-2">Target Vehicle Search (Registration Number Only)</label>
                     <div class="relative">
@@ -156,142 +166,102 @@
                             <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
                         </div>
                         <input type="text" id="vehicle-search" autocomplete="off" disabled
-                            placeholder="Enter full or partial registration (e.g. GJ05, 1400)..." 
-                            class="w-full pl-10 pr-12 py-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300 text-sm md:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                            placeholder="Enter Registration No. (e.g. GJ05, GJ05BY6826)..." 
+                            class="w-full pl-10 pr-12 py-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300 text-sm md:text-base font-medium disabled:opacity-50">
                         
                         <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                            <!-- Search Status Loader -->
                             <i id="search-spinner" class="fa-solid fa-circle-notch fa-spin text-amber-400 hidden"></i>
                         </div>
                     </div>
 
-                    <!-- PREMIUM SUGGESTION SYSTEM DROPDOWN -->
+                    <!-- DROPDOWN OPTIONS LIST -->
                     <div id="suggestions-box" class="hidden absolute top-full left-0 right-0 mt-2 max-h-72 overflow-y-auto rounded-xl bg-slate-900 border border-slate-800 shadow-2xl z-50 divide-y divide-slate-800/80">
-                        <!-- Filled dynamically by runtime search events -->
+                        <!-- Populated at runtime -->
                     </div>
                 </div>
             </div>
 
-            <!-- RESULT PORTAL AREA -->
-            <div id="result-workspace" class="space-y-6">
-                <!-- Welcome/Instructional Placeholder View -->
+            <!-- RESULT PORTAL PANEL -->
+            <div id="result-workspace" class="space-y-8">
+                <!-- Welcome Empty State -->
                 <div id="empty-state" class="flex flex-col items-center justify-center text-center py-20 px-4 rounded-2xl border-2 border-dashed border-slate-800">
                     <div class="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center border border-slate-800 mb-4 text-amber-400/80">
                         <i class="fa-solid fa-magnifying-glass-chart text-2xl"></i>
                     </div>
                     <h3 class="text-lg font-bold text-slate-200">No Vehicle Selected</h3>
-                    <p class="text-sm text-slate-400 max-w-sm mt-1">Please select an operational category from the sidebar and search for a valid vehicle registration number to retrieve the ledger map.</p>
+                    <p class="text-sm text-slate-400 max-w-sm mt-1">Please type a valid vehicle number to pull the structured ledger mapping parameters across chronological logs.</p>
                 </div>
 
-                <!-- LOADING SKELETONS GRID -->
+                <!-- PULSATING LOADING SKELETONS -->
                 <div id="skeleton-loader" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Iterating skeleton cards to prevent layouts shifts -->
-                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3">
-                        <div class="h-3 w-1/3 bg-slate-800 rounded"></div>
-                        <div class="h-5 w-3/4 bg-slate-800 rounded"></div>
-                    </div>
-                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3">
-                        <div class="h-3 w-1/4 bg-slate-800 rounded"></div>
-                        <div class="h-5 w-2/3 bg-slate-800 rounded"></div>
-                    </div>
-                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3">
-                        <div class="h-3 w-1/2 bg-slate-800 rounded"></div>
-                        <div class="h-5 w-1/2 bg-slate-800 rounded"></div>
-                    </div>
-                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3">
-                        <div class="h-3 w-1/3 bg-slate-800 rounded"></div>
-                        <div class="h-5 w-3/4 bg-slate-800 rounded"></div>
-                    </div>
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3"><div class="h-3 w-1/3 bg-slate-800 rounded"></div><div class="h-5 w-3/4 bg-slate-800 rounded"></div></div>
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3"><div class="h-3 w-1/4 bg-slate-800 rounded"></div><div class="h-5 w-2/3 bg-slate-800 rounded"></div></div>
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3"><div class="h-3 w-1/2 bg-slate-800 rounded"></div><div class="h-5 w-1/2 bg-slate-800 rounded"></div></div>
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 animate-pulse space-y-3"><div class="h-3 w-1/3 bg-slate-800 rounded"></div><div class="h-5 w-3/4 bg-slate-800 rounded"></div></div>
                 </div>
 
-                <!-- AUTOMATIC DYNAMIC DATA HEADERS MAPPER (GRID RENDER TARGET) -->
+                <!-- CHRONOLOGICAL HISTORY LIST & MAPPER TARGET -->
                 <div id="record-grid-container" class="hidden space-y-6">
-                    <div class="flex items-center gap-2 text-slate-400 text-xs tracking-wider uppercase font-bold">
-                        <i class="fa-solid fa-circle-nodes text-amber-400 text-xs"></i>
-                        <span>Auto-Mapped Ledger Data Attributes</span>
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex items-center gap-2 text-slate-400 text-xs tracking-wider uppercase font-bold">
+                            <i class="fa-solid fa-clock-history text-amber-400"></i>
+                            <span id="match-count-label">History Entries Located</span>
+                        </div>
+                        <p class="text-xs text-slate-400">If multiple chronological insurance states match, select the entry card below to check parameters:</p>
+                    </div>
+
+                    <!-- Horizontal Selector Buttons for Multi-entries -->
+                    <div id="multi-record-selector" class="flex flex-wrap gap-2 pb-2 border-b border-slate-800/80">
+                        <!-- Dynamic Selector Pills generated here -->
                     </div>
                     
+                    <!-- DATA HEADERS MAP BLOCK -->
                     <div id="record-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        <!-- Injected dynamic card objects from mapping parsing engine -->
+                        <!-- Dynamic dynamic fields parsed iteratively here -->
                     </div>
                 </div>
-
             </div>
         </main>
 
-        <!-- MOBILE / TABLET NAV DRAWER (BOTTOM NAV INTEGRATED FOR ACCESSIBILITY) -->
-        <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800 py-3 px-4 flex justify-around items-center text-slate-400" id="mobile-nav">
-            <!-- Navigation icons populated dynamically below -->
+        <!-- MOBILE PERSISTENT NAVIGATION FIXTURE -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800 py-3.5 px-4 flex justify-around items-center text-slate-400">
+            <button class="flex flex-col items-center justify-center gap-1 text-[11px] font-extrabold text-amber-400 outline-none w-full">
+                <i class="fa-solid fa-shield-halved text-xl"></i>
+                <span>Insurance</span>
+            </button>
         </nav>
 
     </div>
 
     <!-- CORPORATE FOOTER -->
     <footer class="w-full bg-slate-950 border-t border-slate-900/60 py-3.5 text-center shrink-0 z-30">
-        <p class="text-[9px] md:text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+        <p class="text-[9px] font-bold tracking-widest text-slate-500 uppercase">
             © ALL RESERVED RIGHT VIKAS MISHRA
         </p>
     </footer>
 
-    <!-- RUNTIME LOGIC CONTROLLER -->
+    <!-- RUNTIME LOGIC LOG ENGINE -->
     <script>
         /* ==========================================
            1. ARCHITECTURAL CONFIGURATION LAYER
            ========================================== */
-        const API_URL_INSURANCE = "https://script.google.com/macros/s/AKfycbxmO4HyFnfM_Mz-wZx5SBDX4v1zqvH-BJb9PlrMYkkz0NyWQoWe4D5-vlFt1IAlgb2O/exec";
-        const API_URL_TRANSFER  = "https://script.google.com/macros/s/AKfycbwNPxih1tQU_igfFD3C4lrGEW2tifa1Jc6Swrci-LVCfiTytZ_d-oMDsutyp5ytYZ7a/exec";
-        const API_URL_PASSING   = "https://script.google.com/macros/s/AKfycby-lnG3bUy_W30Z-wVCwNzI8Ukd14GJyOpZKQG0rRMcE03aqn9FlbO7ojZIbMh_SbQOSQ/exec";
+        const API_URL_INSURANCE = "https://script.google.com/macros/s/AKfycbz2Lne0VJxtRmQe7yf95OCGH7zbMLvU5NiooMbZs-uL7FxAoDr6jmyNd4QT9k-F_IjW/exec";
+
+        // Memory states
+        let insuranceCache = null;
+        let selectedMatchingRecords = [];
 
         /* ==========================================
-           TAB DEFINITION ENGINE
-           ========================================== */
-        const TAB_CONFIGS = [
-            {
-                id: "insurance",
-                label: "Insurance Details",
-                icon: "fa-shield-halved",
-                apiUrl: API_URL_INSURANCE,
-                description: "Direct real-time query interface for commercial policy periods, coverages, and claims mapping."
-            },
-            {
-                id: "transfer",
-                label: "Transfer & Passing",
-                icon: "fa-right-left",
-                apiUrl: API_URL_TRANSFER,
-                description: "Vehicle ownership transfer states, certificate changes, and verification checkpoints."
-            },
-            {
-                id: "passing",
-                label: "Passing Records",
-                icon: "fa-clipboard-check",
-                apiUrl: API_URL_PASSING,
-                description: "Tax structure parameters, passing authorizations, and fitness validations."
-            }
-        ];
-
-        /* ==========================================
-           STATE CONTAINER
-           ========================================== */
-        let activeTab = "insurance";
-        let apiCache = {
-            insurance: null,
-            transfer: null,
-            passing: null
-        };
-
-        /* ==========================================
-           INITIALIZATION ENTRY POINT
+           SYSTEM ENGINE INITIALIZATION
            ========================================== */
         document.addEventListener("DOMContentLoaded", () => {
             initSystemClock();
-            initNavigationDOM();
-            switchTab(activeTab);
-            
-            // Register search input event handlers for real-time evaluations
+            syncDatabase();
+
             const searchInput = document.getElementById("vehicle-search");
-            searchInput.addEventListener("input", handleSearchInput);
-            
-            // Dismiss suggestions box when clicking outside context
+            searchInput.addEventListener("input", executeDynamicSearch);
+
+            // Dismiss elements contextually
             document.addEventListener("click", (e) => {
                 if (!e.target.closest("#vehicle-search") && !e.target.closest("#suggestions-box")) {
                     hideSuggestions();
@@ -300,152 +270,69 @@
         });
 
         /* ==========================================
-           SYSTEM DIGITAL CLOCK ENGINE
+           REAL TIME DIGITAL RUNTIME CLOCK
            ========================================== */
         function initSystemClock() {
             const clockEl = document.getElementById("digital-clock");
-            function updateTime() {
+            function refreshTime() {
                 const now = new Date();
-                
-                // Formatted: DD-MM-YYYY | HH:MM:SS AM/PM
                 const day = String(now.getDate()).padStart(2, '0');
                 const month = String(now.getMonth() + 1).padStart(2, '0');
                 const year = now.getFullYear();
                 
-                let hours = now.getHours();
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
+                let hrs = now.getHours();
+                const mins = String(now.getMinutes()).padStart(2, '0');
+                const secs = String(now.getSeconds()).padStart(2, '0');
+                const ampm = hrs >= 12 ? 'PM' : 'AM';
                 
-                hours = hours % 12;
-                hours = hours ? hours : 12; // 12hr alignment
-                const formattedHours = String(hours).padStart(2, '0');
+                hrs = hrs % 12;
+                hrs = hrs ? hrs : 12;
+                const formattedHrs = String(hrs).padStart(2, '0');
                 
-                clockEl.textContent = `${day}-${month}-${year} | ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+                clockEl.textContent = `${day}-${month}-${year} | ${formattedHrs}:${mins}:${secs} ${ampm}`;
             }
-            updateTime();
-            setInterval(updateTime, 1000);
+            refreshTime();
+            setInterval(refreshTime, 1000);
         }
 
         /* ==========================================
-           NAVIGATION SETUP & BUILD ENGINE
+           DATABASE SYNCHRONIZATION RUNTIME (FETCH & CACHE)
            ========================================== */
-        function initNavigationDOM() {
-            const dNav = document.getElementById("desktop-nav");
-            const mNav = document.getElementById("mobile-nav");
-            
-            dNav.innerHTML = "";
-            mNav.innerHTML = "";
-            
-            TAB_CONFIGS.forEach(tab => {
-                // Build Desktop Anchor Navigation Links
-                const dAnchor = document.createElement("button");
-                dAnchor.id = `d-tab-${tab.id}`;
-                dAnchor.className = "w-full flex items-center gap-3.5 px-4 py-3 text-sm font-semibold rounded-lg transition-all duration-200 outline-none select-none text-left";
-                dAnchor.innerHTML = `
-                    <i class="fa-solid ${tab.icon} text-lg w-5 text-slate-400 group-hover:text-amber-400"></i>
-                    <span>${tab.label}</span>
-                `;
-                dAnchor.onclick = () => switchTab(tab.id);
-                dNav.appendChild(dAnchor);
-
-                // Build Touch Optimized Mobile Anchor items
-                const mAnchor = document.createElement("button");
-                mAnchor.id = `m-tab-${tab.id}`;
-                mAnchor.className = "flex flex-col items-center justify-center gap-1 py-1 px-3 text-[10px] font-bold tracking-tight outline-none select-none transition-all duration-200 w-1/3";
-                mAnchor.innerHTML = `
-                    <i class="fa-solid ${tab.icon} text-lg"></i>
-                    <span class="truncate max-w-full">${tab.label.split(" ")[0]}</span>
-                `;
-                mAnchor.onclick = () => switchTab(tab.id);
-                mNav.appendChild(mAnchor);
-            });
-        }
-
-        /* ==========================================
-           NAV STATE CONTROLLER
-           ========================================== */
-        function switchTab(tabId) {
-            activeTab = tabId;
-            const currentTabObj = TAB_CONFIGS.find(t => t.id === tabId);
-            
-            // Header Content Mutation
-            document.getElementById("workspace-title").textContent = currentTabObj.label;
-            document.getElementById("workspace-description").textContent = currentTabObj.description;
-            
-            // UI Element Reset
-            resetSearchEngine();
-            
-            // Sync Navigation styles (Active / Inactive structures)
-            TAB_CONFIGS.forEach(t => {
-                const dEl = document.getElementById(`d-tab-${t.id}`);
-                const mEl = document.getElementById(`m-tab-${t.id}`);
-                
-                if (t.id === tabId) {
-                    // Active States (Vivid High Contrast Borders & amber Accents)
-                    dEl.className = "w-full flex items-center gap-3.5 px-4 py-3 text-sm font-bold rounded-lg bg-slate-950 text-amber-400 border-l-4 border-amber-400 shadow-md outline-none text-left";
-                    mEl.className = "flex flex-col items-center justify-center gap-1 py-1 px-3 text-[10px] font-extrabold text-amber-400 outline-none w-1/3 transition-all";
-                } else {
-                    // Standard Inactive States
-                    dEl.className = "w-full flex items-center gap-3.5 px-4 py-3 text-sm font-semibold rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800/40 border-l-4 border-transparent outline-none text-left transition-all";
-                    mEl.className = "flex flex-col items-center justify-center gap-1 py-1 px-3 text-[10px] font-bold text-slate-500 hover:text-slate-300 outline-none w-1/3 transition-all";
-                }
-            });
-
-            // Trigger fetch pipeline or populate directly from cached properties
-            triggerSessionSync();
-        }
-
-        /* ==========================================
-           DATA RESOLUTION ENGINE (ASYNC & CACHING)
-           ========================================== */
-        async function triggerSessionSync(forceRefresh = false) {
-            const currentTabObj = TAB_CONFIGS.find(t => t.id === activeTab);
+        async function syncDatabase(forceRefresh = false) {
             const searchInput = document.getElementById("vehicle-search");
             const indicator = document.getElementById("cache-indicator");
             const syncIcon = document.getElementById("sync-icon");
+            const totalCounter = document.getElementById("total-records-count");
             
             dismissAlert();
             
-            if (!forceRefresh && apiCache[activeTab]) {
-                // Populate instant search with session data
+            if (!forceRefresh && insuranceCache) {
                 searchInput.disabled = false;
                 indicator.classList.remove("hidden");
                 return;
             }
 
-            // Enter Active Loading State
             searchInput.disabled = true;
-            searchInput.placeholder = `Syncing data from endpoint...`;
+            searchInput.placeholder = "Syncing live tracking nodes from engine...";
             indicator.classList.add("hidden");
             syncIcon.classList.add("fa-spin", "text-amber-400");
-            
             showLoader();
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s absolute timeout
+                const res = await fetch(API_URL_INSURANCE);
+                if (!res.ok) throw new Error("Network handshake failure");
                 
-                const response = await fetch(currentTabObj.apiUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) throw new Error("HTTP-Protocol-Exception");
+                const data = await res.json();
+                insuranceCache = Array.isArray(data) ? data : [];
                 
-                const data = await response.json();
-                
-                // Cache configuration structures
-                apiCache[activeTab] = Array.isArray(data) ? data : (data.data || []);
-                
-                // Active configurations states
+                totalCounter.textContent = insuranceCache.length;
                 searchInput.disabled = false;
-                searchInput.placeholder = "Enter full or partial registration (e.g. GJ05, 1400)...";
-                if(apiCache[activeTab]) {
-                    indicator.classList.remove("hidden");
-                }
+                searchInput.placeholder = "Enter Registration No. (e.g. GJ05, GJ05BY6826)...";
+                indicator.classList.remove("hidden");
             } catch (err) {
-                console.error("Endpoint Resolution Failure: ", err);
-                triggerUIError("The API Web-App endpoint rejected the handshake or exceeded the connection limits.");
-                searchInput.placeholder = "Failed to sync structural datasets.";
+                console.error(err);
+                triggerUIError("Handshake failure - Verify deployment permission or authorization settings.");
+                searchInput.placeholder = "Failed to synchronize operational dataset.";
             } finally {
                 syncIcon.classList.remove("fa-spin", "text-amber-400");
                 hideLoader();
@@ -453,10 +340,10 @@
         }
 
         /* ==========================================
-           VEHICLE SPECIFICITY ENGINE (MATCHING & PARSING)
+           TARGETED PARSING & DATA INTEGRITY FILTER
            ========================================== */
-        function handleSearchInput(e) {
-            const query = e.target.value.toUpperCase().replace(/\s+/g, '');
+        function executeDynamicSearch(e) {
+            const query = e.target.value.toUpperCase().replace(/[\s\.-]/g, '');
             const dropdown = document.getElementById("suggestions-box");
             const spinner = document.getElementById("search-spinner");
             
@@ -466,118 +353,149 @@
             }
 
             spinner.classList.remove("hidden");
-            
-            const dataset = apiCache[activeTab] || [];
-            
-            // DATA INTEGRITY FILTER LOGIC: Strict match search against registration entries
-            const matches = dataset.filter(row => {
-                // Resolve the dynamic key for 'REG. NO.' or 'REG.NO'
-                const regKey = Object.keys(row).find(key => {
-                    const cleanKey = key.toUpperCase().replace(/[\s\.]/g, '');
-                    return cleanKey === "REGNO" || cleanKey === "REGISTRATIONNO";
-                });
 
+            // Strictly filter via parsed query metrics against "REG. NO." column
+            const mappedRecords = insuranceCache.filter(row => {
+                const regKey = Object.keys(row).find(k => k.toUpperCase().replace(/[\s\.]/g, '') === "REGNO");
                 if (!regKey || !row[regKey]) return false;
-
-                const regVal = String(row[regKey]).toUpperCase().replace(/\s+/g, '');
                 
-                // Verify whether the parsed query parameter is found anywhere inside the clean registration string
-                return regVal.includes(query);
+                const cleanRegVal = String(row[regKey]).toUpperCase().replace(/[\s\.-]/g, '');
+                return cleanRegVal.includes(query);
             });
 
-            renderSuggestions(matches);
+            renderSuggestions(mappedRecords);
             spinner.classList.add("hidden");
         }
 
-        function renderSuggestions(records) {
+        /* ==========================================
+           PREMIUM DROPDOWN SUGGESTIONS LISTENER
+           ========================================== */
+        function renderSuggestions(matches) {
             const dropdown = document.getElementById("suggestions-box");
             dropdown.innerHTML = "";
 
-            if (records.length === 0) {
+            if (matches.length === 0) {
                 const noResult = document.createElement("div");
                 noResult.className = "px-5 py-4 text-xs font-semibold text-slate-400 text-center";
-                noResult.innerHTML = `<i class="fa-solid fa-circle-question mr-1"></i> No registrations matching search parameters.`;
+                noResult.innerHTML = `<i class="fa-solid fa-circle-question mr-1"></i> No matching registration logs listed.`;
                 dropdown.appendChild(noResult);
                 dropdown.classList.remove("hidden");
                 return;
             }
 
-            // Output top matches to prevent DOM overflow limits
-            records.slice(0, 8).forEach((record, index) => {
-                // Dynamically look for Registration column mapping key
-                const regKey = Object.keys(record).find(k => k.toUpperCase().replace(/[\s\.]/g, '') === "REGNO" || k.toUpperCase().replace(/[\s\.]/g, '') === "REGISTRATIONNO") || "REG. NO.";
-                const regValue = record[regKey] || "UNKNOWN REG";
+            // Group multiple values by registration to compress dropdown listings cleanly
+            const uniqueRegMap = {};
+            matches.forEach(item => {
+                const regKey = Object.keys(item).find(k => k.toUpperCase().replace(/[\s\.]/g, '') === "REGNO");
+                const regValue = item[regKey];
+                if (!uniqueRegMap[regValue]) uniqueRegMap[regValue] = [];
+                uniqueRegMap[regValue].push(item);
+            });
 
-                // Subtitle metadata key extraction (e.g. Owner name, vehicle class)
-                const ownerKey = Object.keys(record).find(k => k.toUpperCase().includes("OWNER") || k.toUpperCase().includes("CLIENT")) || "";
-                const ownerVal = ownerKey ? record[ownerKey] : "";
+            Object.entries(uniqueRegMap).slice(0, 10).forEach(([regNumber, rows]) => {
+                const partyKey = Object.keys(rows[0]).find(k => k.toUpperCase().includes("PARTY") || k.toUpperCase().includes("NAME"));
+                const partyName = partyKey ? rows[0][partyKey] : "Unknown Client";
 
-                const rowOption = document.createElement("button");
-                rowOption.className = "w-full text-left px-5 py-3 hover:bg-slate-800/80 active:bg-slate-800 flex items-center justify-between transition-all outline-none";
-                rowOption.innerHTML = `
+                const optionRow = document.createElement("button");
+                optionRow.className = "w-full text-left px-5 py-3 hover:bg-slate-800/80 active:bg-slate-800 flex items-center justify-between transition-all outline-none";
+                optionRow.innerHTML = `
                     <div>
-                        <p class="text-sm font-bold text-slate-100 tracking-wide">${regValue}</p>
-                        ${ownerVal ? `<p class="text-[11px] text-slate-400 mt-0.5">${ownerVal}</p>` : ''}
+                        <p class="text-sm font-bold text-slate-100 tracking-wide">${regNumber}</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">${partyName} <span class="ml-2 px-1.5 py-0.2 bg-slate-800 text-[9px] text-amber-400 font-bold border border-slate-700 rounded-full">${rows.length} Logs</span></p>
                     </div>
                     <i class="fa-solid fa-chevron-right text-xs text-amber-400 opacity-60"></i>
                 `;
                 
-                rowOption.onclick = () => {
-                    selectVehicle(record);
+                optionRow.onclick = () => {
+                    bindSelectedVehicleGroup(rows, regNumber);
                 };
-                dropdown.appendChild(rowOption);
+                dropdown.appendChild(optionRow);
             });
 
             dropdown.classList.remove("hidden");
         }
 
-        function selectVehicle(record) {
+        /* ==========================================
+           MULTIPLE ENTRY RESOLVER & AUTOMATIC CARD MAPPER
+           ========================================== */
+        function bindSelectedVehicleGroup(records, regNumber) {
             hideSuggestions();
-            const searchInput = document.getElementById("vehicle-search");
+            document.getElementById("vehicle-search").value = regNumber;
             
-            // Locate dynamic Registration key to bind onto field view
-            const regKey = Object.keys(record).find(k => k.toUpperCase().replace(/[\s\.]/g, '') === "REGNO" || k.toUpperCase().replace(/[\s\.]/g, '') === "REGISTRATIONNO") || "REG. NO.";
-            searchInput.value = record[regKey] || "";
-
-            // AUTOMATIC DYNAMIC DATA HEADERS MAPPER Pipeline
-            const gridContainer = document.getElementById("record-grid-container");
-            const grid = document.getElementById("record-grid");
+            selectedMatchingRecords = records;
+            
+            const container = document.getElementById("record-grid-container");
+            const selectorContainer = document.getElementById("multi-record-selector");
+            const countLabel = document.getElementById("match-count-label");
             const emptyState = document.getElementById("empty-state");
 
+            countLabel.textContent = `${records.length} Chronological Logs Mapped for [ ${regNumber} ]`;
+            selectorContainer.innerHTML = "";
+
+            // Create Selector Pills dynamically for choosing which history row to inspect
+            records.forEach((rec, idx) => {
+                const insDate = rec["INS DATE"] || rec["DATE"] || `Log entry #${idx + 1}`;
+                const pill = document.createElement("button");
+                pill.id = `pill-idx-${idx}`;
+                pill.className = `px-3.5 py-2 text-xs font-bold rounded-lg transition-all ${idx === 0 ? 'bg-amber-400 text-slate-950 shadow-md' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'}`;
+                pill.innerHTML = `<i class="fa-solid fa-calendar-day mr-1.5"></i> Entry (${insDate})`;
+                pill.onclick = () => renderIndividualGridRecord(idx);
+                selectorContainer.appendChild(pill);
+            });
+
+            emptyState.classList.add("hidden");
+            container.classList.remove("hidden");
+            
+            // Render the first matching log index by default
+            renderIndividualGridRecord(0);
+        }
+
+        function renderIndividualGridRecord(activeIndex) {
+            const grid = document.getElementById("record-grid");
             grid.innerHTML = "";
 
-            Object.entries(record).forEach(([key, val]) => {
-                // Clean and format empty values gracefully
-                const cleanValue = (val !== null && val !== undefined && String(val).trim() !== "") ? String(val).trim() : "-";
+            // Manage Pill Highlight States across selections
+            selectedMatchingRecords.forEach((_, idx) => {
+                const pill = document.getElementById(`pill-idx-${idx}`);
+                if(pill) {
+                    if(idx === activeIndex) {
+                        pill.className = "px-3.5 py-2 text-xs font-bold rounded-lg bg-amber-400 text-slate-950 shadow-md transition-all";
+                    } else {
+                        pill.className = "px-3.5 py-2 text-xs font-bold rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 transition-all";
+                    }
+                }
+            });
+
+            const currentActiveTargetRow = selectedMatchingRecords[activeIndex];
+
+            // AUTOMATIC DATA HEADERS MAPPER ENGINE (Zero Static hardcoding UI)
+            Object.entries(currentActiveTargetRow).forEach(([headerTitle, cellVal]) => {
+                const finalVal = (cellVal !== null && cellVal !== undefined && String(cellVal).trim() !== "") ? String(cellVal).trim() : "-";
+                
+                // Color variations markers for status checks (Premium dynamic UI highlight)
+                let valueColorClass = "text-slate-100";
+                if(headerTitle.toUpperCase().includes("PREM") || headerTitle.toUpperCase().includes("PAYMENT")) {
+                    valueColorClass = "text-amber-400 font-mono";
+                }
                 
                 const card = document.createElement("div");
-                card.className = "p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700/80 transition-all duration-300 flex flex-col justify-between space-y-2 relative overflow-hidden group";
+                card.className = "p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col justify-between space-y-2 relative overflow-hidden group shadow-lg";
                 card.innerHTML = `
                     <div class="absolute top-0 left-0 w-1 h-full bg-slate-800 group-hover:bg-amber-400 transition-all duration-300"></div>
                     <div>
-                        <span class="block text-[10px] font-bold tracking-widest text-amber-400 uppercase">${key}</span>
-                        <span class="block text-sm font-semibold text-slate-100 mt-1.5 break-words">${cleanValue}</span>
+                        <span class="block text-[10px] font-bold tracking-widest text-slate-400 uppercase">${headerTitle}</span>
+                        <span class="block text-sm font-semibold ${valueColorClass} mt-1.5 break-words">${finalVal}</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
-
-            emptyState.classList.add("hidden");
-            gridContainer.classList.remove("hidden");
         }
 
         /* ==========================================
-           UTILITIES / UI TRANSITION LAYERS
+           UTILITY INTERFACE CONTROLLERS
            ========================================== */
         function hideSuggestions() {
             document.getElementById("suggestions-box").classList.add("hidden");
-        }
-
-        function resetSearchEngine() {
-            document.getElementById("vehicle-search").value = "";
-            document.getElementById("record-grid-container").classList.add("hidden");
-            document.getElementById("empty-state").classList.remove("hidden");
-            hideSuggestions();
         }
 
         function showLoader() {
@@ -590,8 +508,8 @@
             document.getElementById("skeleton-loader").classList.add("hidden");
         }
 
-        function triggerUIError(message) {
-            document.getElementById("alert-message").textContent = message;
+        function triggerUIError(msg) {
+            document.getElementById("alert-message").textContent = msg;
             document.getElementById("alert-banner").classList.remove("hidden");
         }
 
