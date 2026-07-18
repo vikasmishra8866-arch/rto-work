@@ -245,7 +245,7 @@
         /* ==========================================
            1. ARCHITECTURAL CONFIGURATION LAYER
            ========================================== */
-        const API_URL_INSURANCE = "https://script.google.com/macros/s/AKfycbxGigyPoylAwbWeO47w_BPZeRkOYkXWPiL5CL-eBEprofHMhzTCPNaS1M53Y2NeluY/exec";
+        const API_URL_INSURANCE = "https://script.google.com/macros/s/AKfycbyokPy5nnQAyPYxBZpWLh7Mp8XkkbktJ7vZM4QbjyxfP31yEViVA0wHSNG0LJE5OSe-/exec";
 
         // Memory states
         let insuranceCache = null;
@@ -319,10 +319,13 @@
             showLoader();
 
             try {
+                // Fetching stream directly as cross-origin safe text structure
                 const res = await fetch(API_URL_INSURANCE);
                 if (!res.ok) throw new Error("Network handshake failure");
                 
-                const data = await res.json();
+                const rawText = await res.text();
+                const data = JSON.parse(rawText);
+                
                 insuranceCache = Array.isArray(data) ? data : [];
                 
                 totalCounter.textContent = insuranceCache.length;
@@ -331,7 +334,7 @@
                 indicator.classList.remove("hidden");
             } catch (err) {
                 console.error(err);
-                triggerUIError("Handshake failure - Verify deployment permission or authorization settings.");
+                triggerUIError("Handshake failure - Sync connection blocked by origin check.");
                 searchInput.placeholder = "Failed to synchronize operational dataset.";
             } finally {
                 syncIcon.classList.remove("fa-spin", "text-amber-400");
